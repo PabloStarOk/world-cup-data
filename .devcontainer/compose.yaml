@@ -1,0 +1,33 @@
+name: ${COMPOSE_NAME}
+
+services:
+  python:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${PYTHON_NAME}
+    env_file:
+      - path: ./.env
+        required: ${ENV_FILE_REQUIRED}
+    # restart: ${RESTART}
+    stdin_open: ${STDIN_OPEN} # True if it is a dev container
+    volumes:
+     - type: ${WORKSPACE_MOUNT_TYPE}
+       source: ${WORKSPACE_SOURCE}
+       target: ${WORKSPACE_TARGET}
+    networks:
+      - PythonDevNetwork
+    # If needed, uncomment the following lines to set resource limits
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: ${PYTHON_MAX_CPU_COUNT}
+    #       memory: ${PYTHON_MAX_MEM}
+    #     reservations:
+    #       cpus: ${PYTHON_MIN_CPU_COUNT}
+    #       memory: ${PYTHON_MIN_MEM}
+
+networks:
+  PythonDevNetwork:
+    name: ${NETWORK_NAME}
+    driver: ${NETWORK_DRIVER}
